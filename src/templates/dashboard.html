@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <h2>Top Tracks:</h2>
+    <ul>
+        {% for track in tracks_info %}
+            <li>
+                Track Name: {{ track.track_name }}<br>
+                Artist Name: {{ track.artist_name }}<br>
+                Track Link: <a href="{{ track.track_link }}" target="_blank">{{ track.track_link }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
