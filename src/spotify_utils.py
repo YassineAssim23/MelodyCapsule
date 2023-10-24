@@ -105,6 +105,26 @@ def get_recently_played(token_info):
         return None
 
 
+# Update get_user_playlists function in spotify_utils.py
+def get_user_playlists(token_info, limit=50, offset=0):
+    sp = create_spotify_client(token_info)
+    try:
+        playlists = sp.current_user_playlists(limit=limit, offset=offset)
+        playlists_info = []
+        for playlist in playlists['items']:
+            playlist_name = playlist['name']
+            playlist_link = playlist['external_urls']['spotify']
+            image_url = playlist['images'][0]['url'] if playlist['images'] else None
+            playlists_info.append({
+                'name': playlist_name,
+                'link': playlist_link,
+                'image_url': image_url
+            })
+        return playlists_info
+    except Exception as e:
+        print(f"Error getting user playlists: {e}")
+        return None
+
 
 
 

@@ -1,5 +1,5 @@
 from flask import Flask, request, session, redirect, url_for, render_template
-from spotify_utils import get_user_top_tracks, get_user_top_artists, get_user_info, get_recently_played, get_user_devices
+from spotify_utils import get_user_top_tracks, get_user_top_artists, get_user_info, get_recently_played, get_user_devices, get_user_playlists
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
@@ -126,7 +126,19 @@ def recentlyplayed():
         return render_template('error.html', error_message=error_message)
 
 
-
+@app.route('/playlist')
+def playlists():
+    user_token = get_token()
+    if user_token:
+        playlists_info = get_user_playlists(user_token)
+        if playlists_info:
+            return render_template('playlist.html', title='User Playlists', playlists_info=playlists_info)
+        else:
+            error_message = "Error retrieving user playlists. Please try again later."
+            return render_template('error.html', error_message=error_message)
+    else:
+        error_message = "User not authenticated. Please login first."
+        return render_template('error.html', error_message=error_message)
 
 
 

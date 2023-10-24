@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    <h1>User Playlists</h1>
+    <ul>
+        {% for playlist in playlists_info %}
+        <li>
+            <img src="{{ playlist.image_url }}" alt="{{ playlist.name }} Playlist Image" width="100" height="100">
+            <a href="{{ playlist.link }}" target="_blank">{{ playlist.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
