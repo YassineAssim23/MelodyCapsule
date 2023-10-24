@@ -29,20 +29,21 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")
 def homepage():
     return render_template('index.html', title='Welcome to MelodyCapsule!')
 
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html', title='Welcome to MelodyCapsule!')
+
 @app.route('/login')
 def login():
-    sp_ouath = SpotifyOAuth(
+    sp_oauth = SpotifyOAuth(
         client_id = CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri="http://127.0.0.1:5000/redirectPage",
         scope="user-top-read user-library-read"
     )
-    auth_url = sp_ouath.get_authorize_url()
+    auth_url = sp_oauth.get_authorize_url()
     return redirect(auth_url)
 
-@app.route('/getTracks')
-def getTracks():
-    return 'Tracks Page'
 
 @app.route('/redirectPage')
 def redirectPage():
@@ -62,13 +63,13 @@ def get_token():
     return token_info
 
 # Assuming you have a 'dashboard' route defined like this
-@app.route('/dashboard')
-def dashboard():
+@app.route('/toptracks')
+def toptracks():
     user_token = get_token()
     if user_token:
         tracks_info = get_user_top_tracks(user_token)
         if tracks_info:
-            return render_template('dashboard.html', title='Welcome to MelodyCapsule!', tracks_info=tracks_info)
+            return render_template('toptracks.html', title='Welcome to MelodyCapsule!', tracks_info=tracks_info)
         else:
             error_message = "Error retrieving top tracks. Please try again later."
             return render_template('error.html', error_message=error_message)

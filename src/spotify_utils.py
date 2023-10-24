@@ -22,10 +22,12 @@ def get_user_top_tracks(token_info, limit=10, time_range="medium_term"):
             track_name = track['name']
             artist_name = track['artists'][0]['name']
             track_link = track['external_urls']['spotify']
+            image_url = track['album']['images'][0]['url'] if track['album']['images'] else None
             tracks_info.append({
                 'track_name': track_name,
                 'artist_name': artist_name,
-                'track_link': track_link
+                'track_link': track_link,
+                'image_url': image_url
             })
         return tracks_info
     except Exception as e:
