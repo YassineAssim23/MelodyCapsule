@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    <h1>Recently Played Tracks</h1>
+
+    {% if recentlyplayed %}
+        <ul>
+            {% for track in recentlyplayed %}
+                <li>
+                    <strong>Track Name:</strong> {{ track.name }}<br>
+                    <strong>Artist:</strong> {{ track.artist }}<br>
+                    <strong>Album:</strong> {{ track.album }}<br>
+                    <strong>Play Time:</strong> {{ track.played_at }}<br>
+                    <strong>Track Link:</strong> <a href="{{ track.track_link }}">{{ track.track_link }}</a><br>
+                    {% if track.image_url %}
+                        <strong>Album Art:</strong> <img src="{{ track.image_url }}" alt="Album Art"><br>
+                    {% endif %}
+                    <hr>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recently played tracks available.</p>
+    {% endif %}
+
+    <a href="/dashboard">Back to Dashboard</a>
+</body>
+
+</html>

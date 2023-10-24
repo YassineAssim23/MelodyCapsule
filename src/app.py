@@ -1,5 +1,5 @@
 from flask import Flask, request, session, redirect, url_for, render_template
-from spotify_utils import get_user_top_tracks, get_user_top_artists, get_user_info
+from spotify_utils import get_user_top_tracks, get_user_top_artists, get_user_info, get_recently_played
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
@@ -18,7 +18,7 @@ def create_spotify_oauth():
         client_id=CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri="http://127.0.0.1:5000/redirectPage", 
-        scope="user-top-read user-library-read"
+        scope="user-top-read user-library-read user-read-recently-played"
     )
 
 app = Flask(__name__)
@@ -50,7 +50,7 @@ def login():
         client_id = CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri="http://127.0.0.1:5000/redirectPage",
-        scope="user-top-read user-library-read"
+        scope="user-top-read user-library-read user-read-recently-played"
     )
     auth_url = sp_oauth.get_authorize_url()
     return redirect(auth_url)
@@ -63,7 +63,7 @@ def redirectPage():
         client_id = CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri="http://127.0.0.1:5000/redirectPage",
-        scope="user-top-read user-library-read"
+        scope="user-top-read user-library-read user-read-recently-played"
     )
     token_info = sp_oauth.get_access_token(code)
     session[TOKEN_INFO] = token_info
@@ -96,6 +96,22 @@ def topartists():
         artists_info = get_user_top_artists(user_token)
         if artists_info:
             return render_template('topartists.html', title='Welcome to MelodyCapsule!', artists_info=artists_info)
+        else:
+            error_message = "Error retrieving top tracks. Please try again later."
+            return render_template('error.html', error_message=error_message)
+    else:
+        error_message = "User not authenticated. Please login first."
+        return render_template('error.html', error_message=error_message)
+
+
+# Assuming you have a 'dashboard' route defined like this
+@app.route('/recentlyplayed')
+def recentlyplayed():
+    user_token = get_token()
+    if user_token:
+        recentlyplayed = get_recently_played(user_token)
+        if recentlyplayed:
+            return render_template('recentlyplayed.html', title='Welcome to MelodyCapsule!', recentlyplayed=recentlyplayed)
         else:
             error_message = "Error retrieving top tracks. Please try again later."
             return render_template('error.html', error_message=error_message)
