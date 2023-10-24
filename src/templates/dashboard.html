@@ -4,11 +4,23 @@
     <title>Spotify Data</title>
 </head>
 <body>
-    <h1>Spotify Data</h1>
+    <h1>Welcome to MelodyCapsule!</h1>
+
+    {% if user_info %}
+        <h2>User Information:</h2>
+        <p><strong>Display Name:</strong> {{ user_info.display_name }}</p>
+        {% if user_info.images %}
+            <img src="{{ user_info.images[0].url }}" alt="Profile Picture">
+        {% else %}
+            <p>No profile picture available.</p>
+        {% endif %}
+    {% else %}
+        <p>Failed to retrieve user information.</p>
+    {% endif %}
+
     <h2>Navigate to:</h2>
     <ul>
         <li><a href="/toptracks">Top Tracks</a></li>
-        <li><a href="/topalbums">Top Albums</a></li>
         <li><a href="/topartists">Top Artists</a></li>
     </ul>
 </body>

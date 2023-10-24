@@ -55,8 +55,14 @@ def get_user_top_artists(token_info, limit=10, time_range="medium_term"):
         return None
 
 
-
-
+def get_user_info(token_info):
+    sp = create_spotify_client(token_info)
+    try:
+        user_info = sp.current_user()
+        return user_info
+    except Exception as e:
+        print(f"Error getting user information: {e}")
+        return None
 
 
 

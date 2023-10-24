@@ -1,5 +1,5 @@
 from flask import Flask, request, session, redirect, url_for, render_template
-from spotify_utils import get_user_top_tracks, get_user_top_artists
+from spotify_utils import get_user_top_tracks, get_user_top_artists, get_user_info
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
@@ -31,7 +31,18 @@ def homepage():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html', title='Welcome to MelodyCapsule!')
+    user_token = get_token()
+    if user_token:
+        user_info = get_user_info(user_token)
+        if user_info:
+            return render_template('dashboard.html', title='Welcome to MelodyCapsule!', user_info=user_info)
+        else:
+            # Handle the case when user information retrieval fails
+            return render_template('dashboard.html', title='Welcome to MelodyCapsule!', user_info=None)
+    else:
+        # Handle the case when the user is not authenticated
+        return render_template('error.html', error_message="User not authenticated. Please login first.")
+
 
 @app.route('/login')
 def login():
@@ -91,7 +102,8 @@ def topartists():
     else:
         error_message = "User not authenticated. Please login first."
         return render_template('error.html', error_message=error_message)
-    
+
+
 
 
 

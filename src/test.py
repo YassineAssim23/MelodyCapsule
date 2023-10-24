@@ -16,7 +16,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 ))
 
 # Get the current user's top tracks
-top_artists = sp.current_user_top_(limit=10, time_range="medium_term")
+me = sp.current_user()
 
 # Print the dictionary to explore its structure
-print(top_artists)
+print(me)
