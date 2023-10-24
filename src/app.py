@@ -62,6 +62,15 @@ def login():
     return redirect(auth_url)
 
 
+@app.route('/logout')
+def logout():
+    # Clear the session data (token information)
+    session.pop(TOKEN_INFO, None)
+    # Redirect the user to the homepage after logout
+    return redirect(url_for('homepage'))
+
+
+
 @app.route('/redirectPage')
 def redirectPage():
     code = request.args.get('code')

@@ -5,37 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MelodyCapsule</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            background-color: #ffffff;
         }
 
         .container {
             text-align: center;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 100px;
+            margin-bottom: 100px;
         }
 
         h1 {
+            font-size: 3rem;
             color: #1db954;
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
         }
 
         .login-button {
             background-color: #1db954;
             color: #ffffff;
             border: none;
-            padding: 10px 20px;
-            font-size: 18px;
+            padding: 15px 30px;
+            font-size: 1.8rem;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 8px;
             transition: background-color 0.3s ease;
         }
 
@@ -49,8 +49,11 @@
     <div class="container">
         <h1>MelodyCapsule</h1>
         <p>Discover your favorite tunes!</p>
-        <a href="{{ url_for('login') }}" class="login-button">Login with Spotify</a>
+        <a href="{{ url_for('login') }}" class="btn btn-success btn-lg">Login with Spotify</a>
     </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
