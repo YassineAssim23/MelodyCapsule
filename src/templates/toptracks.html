@@ -65,41 +65,56 @@
       <h2 class="text-2xl font-bold mb-2">Top Tracks:</h2>
       <label for="time-range" class="block mb-4">Select Time Range:</label>
 
-      <form action="/toptracks" method="get">
-        <select
-          id="time-range"
-          name="time-range"
-          class="mb-6 p-2 border rounded"
-        >
-          <option value="short_term">Short Term</option>
-          <option value="medium_term">Medium Term</option>
-          <option value="long_term">Long Term</option>
+      <form id="filter-form" action="/toptracks" method="get">
+        <select id="time-range" name="time-range" class="mb-6 p-2 border rounded">
+          <option value="short_term">Last 4 Weeks</option>
+          <option value="medium_term">Last 6 Months</option>
+          <option value="long_term">All Time</option>
         </select>
-        <input type="submit" value="Apply Filter" />
       </form>
+      
+      <script>
+        // Get the select element
+        var selectElement = document.getElementById('time-range');
+      
+        // Get the selected time range value from the server-side variable
+        var selectedTimeRange = "{{ selected_time_range }}";
+      
+        // Set the selected option in the dropdown menu based on the server-side variable
+        if (selectedTimeRange) {
+          for (var i = 0; i < selectElement.options.length; i++) {
+            if (selectElement.options[i].value === selectedTimeRange) {
+              selectElement.selectedIndex = i;
+              break;
+            }
+          }
+        }
+      
+        // Add event listener to detect changes in the select element
+        selectElement.addEventListener('change', function() {
+          // Get the form element
+          var formElement = document.getElementById('filter-form');
+          
+          // Submit the form when the select element changes
+          formElement.submit();
+        });
+      </script>
+      
+      
 
       <ul class="grid grid-cols-3 gap-4">
         {% for track in tracks_info %}
         <li class="border p-4 rounded-lg">
-          <img
-            src="{{ track.image_url }}"
-            alt="Track Image"
-            class="max-w-full mb-2"
-          />
-          <strong class="block mb-2">Track Name:</strong> {{ track.track_name
-          }}<br />
-          <strong class="block mb-2">Artist Name:</strong> {{ track.artist_name
-          }}<br />
-          <strong class="block mb-2">Track Link:</strong>
-          <a
-            href="{{ track.track_link }}"
-            target="_blank"
-            class="text-green-500 hover:underline transition duration-300 ease-in-out"
-            >{{ track.track_link }}</a
-          >
+          <a href="{{ track.track_link }}" target="_blank" class="block hover:underline transition duration-300 ease-in-out">
+            <img src="{{ track.image_url }}" alt="Track Image" class="max-w-full mb-2" />
+            <strong class="block mb-2"></strong> {{ track.track_name }}<br />
+            <strong class="block mb-2"></strong> {{ track.artist_name }}<br />
+            <!-- Optionally, you can display the track link here if you want -->
+          </a>
         </li>
         {% endfor %}
       </ul>
+      
     </div>
   </body>
 </html>
