@@ -1,5 +1,5 @@
 from flask import Flask, request, session, redirect, url_for, render_template
-from spotify_utils import get_user_top_tracks, get_user_top_artists, get_user_info, get_recently_played, get_user_devices, get_user_playlists
+import spotify_utils
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
@@ -23,6 +23,11 @@ def create_spotify_oauth():
 
 app = Flask(__name__)
 
+@app.after_request
+def add_header(response):
+    response.cache_control.no_store = True
+    return response
+
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 @app.route('/')
@@ -34,8 +39,8 @@ def dashboard():
     user_token = get_token()
     if user_token:
         # Get user information and devices separately
-        user_info = get_user_info(user_token)
-        devices = get_user_devices(user_token)
+        user_info = spotify_utils.get_user_info(user_token)
+        devices = spotify_utils.get_user_devices(user_token)
 
         if user_info is not None and devices is not None:
             # If both user information and devices are retrieved successfully, pass them to the template
@@ -89,26 +94,36 @@ def get_token():
     return token_info
 
 # Assuming you have a 'dashboard' route defined like this
+from flask import request
+
 @app.route('/toptracks')
 def toptracks():
     user_token = get_token()
+    time_range = request.args.get('time-range', default='medium_term', type=str)
+    
+    if time_range not in ['short_term', 'medium_term', 'long_term']:
+        # Handle invalid time_range parameter
+        return render_template('error.html', error_message="Invalid time_range parameter.")
+    
     if user_token:
-        tracks_info = get_user_top_tracks(user_token)
+        tracks_info = spotify_utils.get_user_top_tracks(user_token, time_range=time_range)
+        
         if tracks_info:
-            return render_template('toptracks.html', title='Welcome to MelodyCapsule!', tracks_info=tracks_info)
+            return render_template('toptracks.html', title='Welcome to MelodyCapsule!', tracks_info=tracks_info, selected_time_range=time_range)
         else:
             error_message = "Error retrieving top tracks. Please try again later."
             return render_template('error.html', error_message=error_message)
     else:
         error_message = "User not authenticated. Please login first."
         return render_template('error.html', error_message=error_message)
+
     
 # Assuming you have a 'dashboard' route defined like this
 @app.route('/topartists')
 def topartists():
     user_token = get_token()
     if user_token:
-        artists_info = get_user_top_artists(user_token)
+        artists_info = spotify_utils.get_user_top_artists(user_token)
         if artists_info:
             return render_template('topartists.html', title='Welcome to MelodyCapsule!', artists_info=artists_info)
         else:
@@ -124,7 +139,7 @@ def topartists():
 def recentlyplayed():
     user_token = get_token()
     if user_token:
-        recentlyplayed = get_recently_played(user_token)
+        recentlyplayed = spotify_utils.get_recently_played(user_token)
         if recentlyplayed:
             return render_template('recentlyplayed.html', title='Welcome to MelodyCapsule!', recentlyplayed=recentlyplayed)
         else:
@@ -139,7 +154,7 @@ def recentlyplayed():
 def playlists():
     user_token = get_token()
     if user_token:
-        playlists_info = get_user_playlists(user_token)
+        playlists_info = spotify_utils.get_user_playlists(user_token)
         if playlists_info:
             return render_template('playlist.html', title='User Playlists', playlists_info=playlists_info)
         else:

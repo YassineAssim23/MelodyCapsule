@@ -13,6 +13,17 @@ REDIRECT_URI = "http://127.0.0.1:5000/redirectPage"
 def create_spotify_client(token_info):
     return spotipy.Spotify(auth=token_info['access_token'])
 
+
+
+def get_user_top_tracks_medium_term(token_info, limit=50):
+    return get_user_top_tracks(token_info, limit=limit, time_range="medium_term")
+
+def get_user_top_tracks_short_term(token_info, limit=50):
+    return get_user_top_tracks(token_info, limit=limit, time_range="short_term")
+
+def get_user_top_tracks_long_term(token_info, limit=50):
+    return get_user_top_tracks(token_info, limit=limit, time_range="long_term")
+
 def get_user_top_tracks(token_info, limit=50, time_range="medium_term"):
     sp = create_spotify_client(token_info)
     try:
@@ -33,7 +44,7 @@ def get_user_top_tracks(token_info, limit=50, time_range="medium_term"):
     except Exception as e:
         print(f"Error getting top tracks: {e}")
         return None
-    
+
 
 def get_user_top_artists(token_info, limit=50, time_range="medium_term"):
     sp = create_spotify_client(token_info)
