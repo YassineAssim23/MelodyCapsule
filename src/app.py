@@ -1,5 +1,5 @@
 from flask import Flask, request, session, redirect, url_for, render_template
-from spotify_utils import get_user_top_tracks
+from spotify_utils import get_user_top_tracks, get_user_top_artists
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
@@ -76,3 +76,23 @@ def toptracks():
     else:
         error_message = "User not authenticated. Please login first."
         return render_template('error.html', error_message=error_message)
+    
+# Assuming you have a 'dashboard' route defined like this
+@app.route('/topartists')
+def topartists():
+    user_token = get_token()
+    if user_token:
+        artists_info = get_user_top_artists(user_token)
+        if artists_info:
+            return render_template('topartists.html', title='Welcome to MelodyCapsule!', artists_info=artists_info)
+        else:
+            error_message = "Error retrieving top tracks. Please try again later."
+            return render_template('error.html', error_message=error_message)
+    else:
+        error_message = "User not authenticated. Please login first."
+        return render_template('error.html', error_message=error_message)
+    
+
+
+
+

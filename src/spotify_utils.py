@@ -33,3 +33,32 @@ def get_user_top_tracks(token_info, limit=10, time_range="medium_term"):
     except Exception as e:
         print(f"Error getting top tracks: {e}")
         return None
+    
+
+def get_user_top_artists(token_info, limit=10, time_range="medium_term"):
+    sp = create_spotify_client(token_info)
+    try:
+        top_artists = sp.current_user_top_artists(limit=limit, time_range=time_range)
+        artists_info = []
+        for artist in top_artists['items']:
+            artist_name = artist['name']
+            artist_link = artist['external_urls']['spotify']
+            image_url = artist['images'][0]['url'] if artist['images'] else None
+            artists_info.append({
+                'artist_name': artist_name,
+                'track_link': artist_link,
+                'image_url': image_url
+            })
+        return artists_info
+    except Exception as e:
+        print(f"Error getting top tracks: {e}")
+        return None
+
+
+
+
+
+
+
+
+
