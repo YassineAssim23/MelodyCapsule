@@ -1,5 +1,5 @@
 from flask import Flask, request, session, redirect, url_for, render_template
-from spotify_utils import get_user_top_tracks, get_user_top_artists, get_user_info, get_recently_played
+from spotify_utils import get_user_top_tracks, get_user_top_artists, get_user_info, get_recently_played, get_user_devices
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
@@ -18,7 +18,7 @@ def create_spotify_oauth():
         client_id=CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri="http://127.0.0.1:5000/redirectPage", 
-        scope="user-top-read user-library-read user-read-recently-played"
+        scope="user-top-read user-library-read user-read-recently-played user-read-playback-state"
     )
 
 app = Flask(__name__)
@@ -33,15 +33,21 @@ def homepage():
 def dashboard():
     user_token = get_token()
     if user_token:
+        # Get user information and devices separately
         user_info = get_user_info(user_token)
-        if user_info:
-            return render_template('dashboard.html', title='Welcome to MelodyCapsule!', user_info=user_info)
+        devices = get_user_devices(user_token)
+
+        if user_info is not None and devices is not None:
+            # If both user information and devices are retrieved successfully, pass them to the template
+            return render_template('dashboard.html', title='Welcome to MelodyCapsule!', user_info=user_info, devices=devices)
         else:
-            # Handle the case when user information retrieval fails
-            return render_template('dashboard.html', title='Welcome to MelodyCapsule!', user_info=None)
+            # Handle the case when either user information or devices retrieval fails
+            error_message = "Error retrieving user information or devices. Please try again later."
+            return render_template('error.html', error_message=error_message)
     else:
         # Handle the case when the user is not authenticated
         return render_template('error.html', error_message="User not authenticated. Please login first.")
+
 
 
 @app.route('/login')
@@ -50,7 +56,7 @@ def login():
         client_id = CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri="http://127.0.0.1:5000/redirectPage",
-        scope="user-top-read user-library-read user-read-recently-played"
+        scope="user-top-read user-library-read user-read-recently-played user-read-playback-state"
     )
     auth_url = sp_oauth.get_authorize_url()
     return redirect(auth_url)
@@ -63,7 +69,7 @@ def redirectPage():
         client_id = CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri="http://127.0.0.1:5000/redirectPage",
-        scope="user-top-read user-library-read user-read-recently-played"
+        scope="user-top-read user-library-read user-read-recently-played user-read-playback-state"
     )
     token_info = sp_oauth.get_access_token(code)
     session[TOKEN_INFO] = token_info

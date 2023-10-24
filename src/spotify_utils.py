@@ -63,6 +63,16 @@ def get_user_info(token_info):
     except Exception as e:
         print(f"Error getting user information: {e}")
         return None
+    
+
+def get_user_devices(token_info):
+    sp = create_spotify_client(token_info)
+    try:
+        devices = sp.devices()
+        return devices.get('devices', [])
+    except Exception as e:
+        print(f"Error getting user devices: {e}")
+        return None
 
 def get_recently_played(token_info):
     sp = create_spotify_client(token_info)

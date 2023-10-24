@@ -18,6 +18,17 @@
         <p>Failed to retrieve user information.</p>
     {% endif %}
 
+    {% if devices %}
+        <h2>Available Devices:</h2>
+        <ul>
+            {% for device in devices %}
+                <li>{{ device.name }} - {{ device.type }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No devices available.</p>
+    {% endif %}
+
     <h2>Navigate to:</h2>
     <ul>
         <li><a href="/toptracks">Top Tracks</a></li>
