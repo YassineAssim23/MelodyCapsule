@@ -5,98 +5,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Top Artists</title>
-    <style>
-        body {
-            background-color: #ffffff;
-            color: #1db954;
-            padding: 30px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        ul li a {
-            text-decoration: none;
-            color: #1db954;
-            transition: color 0.3s ease;
-        }
-
-        ul li a:hover {
-            color: #128c3a;
-        }
-
-        .logout-button {
-            background-color: #1db954;
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .logout-button:hover {
-            background-color: #128c3a;
-        }
-
-        h1 {
-            margin-top: 20px;
-            font-size: 2rem;
-            color: #1db954;
-        }
-
-        .artist-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-
-        .artist-card {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin: 10px;
-            text-align: center;
-            max-width: 200px;
-        }
-
-        .artist-image {
-            max-width: 100%;
-            max-height: 200px;
-            margin-bottom: 10px;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body>
-    <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/toptracks">Top Tracks</a></li>
-        <li><a href="/recentlyplayed">Recently Played</a></li>
-        <li><a href="/playlist">My Playlists</a></li>
+<body class="bg-white text-green-600 p-10">
+    <ul class="flex mb-10">
+        <li class="mr-4 hover:text-white transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
+            <a href="/dashboard">Dashboard</a>
+        </li>
+        <li class="mr-4 hover:text-white transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
+            <a href="/toptracks">Top Tracks</a>
+        </li>
+        <li class="mr-4 hover:text-white transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
+            <a href="/recentlyplayed">Recently Played</a>
+        </li>
+        <li class="hover:text-white transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
+            <a href="/playlist">My Playlists</a>
+        </li>
     </ul>
 
     <!-- Logout button -->
-    <form action="{{ url_for('logout') }}" method="get">
-        <input type="submit" value="Logout" class="logout-button">
+    <form action="{{ url_for('logout') }}" method="get" class="mb-10">
+        <input type="submit" value="Logout"
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
     </form>
-    
-    <h1>Top Artists</h1>
-    <div class="artist-list">
+
+    <h1 class="text-2xl font-bold mb-4">Top Artists</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {% for artist in artists_info %}
-            <div class="artist-card">
-                {% if artist.image_url %}
-                    <img src="{{ artist.image_url }}" alt="{{ artist.artist_name }}" class="artist-image"><br>
-                {% endif %}
-                Artist Name: <a href="{{ artist.artist_link }}" target="_blank">{{ artist.artist_name }}</a>
-            </div>
+        <div class="border p-4 rounded-lg">
+            {% if artist.image_url %}
+            <img src="{{ artist.image_url }}" alt="{{ artist.artist_name }}" class="max-w-full mb-2">
+            {% endif %}
+            <strong class="block mb-2">Artist Name:</strong> <a href="{{ artist.artist_link }}"
+                class="text-green-500 hover:underline">{{ artist.artist_name }}</a>
+        </div>
         {% endfor %}
     </div>
 </body>

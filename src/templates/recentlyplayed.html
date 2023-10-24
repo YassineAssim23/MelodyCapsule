@@ -5,101 +5,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-    <style>
-        body {
-            background-color: #ffffff;
-            color: #1db954;
-            padding: 30px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        ul li a {
-            text-decoration: none;
-            color: #1db954;
-            transition: color 0.3s ease;
-        }
-
-        ul li a:hover {
-            color: #128c3a;
-        }
-
-        .logout-button {
-            background-color: #1db954;
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .logout-button:hover {
-            background-color: #128c3a;
-        }
-
-        h1 {
-            margin-top: 20px;
-            font-size: 2rem;
-            color: #1db954;
-        }
-
-        ul.track-list {
-            padding: 0;
-        }
-
-        ul.track-list li {
-            margin-bottom: 20px;
-        }
-
-        ul.track-list li img {
-            border-radius: 5px;
-        }
-    </style>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body>
-    <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/toptracks">Top Tracks</a></li>
-        <li><a href="/topartists">Top Artists</a></li>
-        <li><a href="/playlist">My Playlists</a></li>
+<body class="bg-white text-green-600 p-10">
+
+    <ul class="flex mb-10">
+        <li class="mr-4">
+            <a href="/dashboard" class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
+                Dashboard
+            </a>
+        </li>
+        <li class="mr-4">
+            <a href="/toptracks" class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
+                Top Tracks
+            </a>
+        </li>
+        <li class="mr-4">
+            <a href="/topartists" class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
+                Top Artists
+            </a>
+        </li>
+        <li>
+            <a href="/playlist" class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
+                My Playlists
+            </a>
+        </li>
     </ul>
 
     <!-- Logout button -->
-    <form action="{{ url_for('logout') }}" method="get">
-        <input type="submit" value="Logout" class="logout-button">
+    <form action="{{ url_for('logout') }}" method="get" class="mb-10">
+        <input type="submit" value="Logout" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
     </form>
-    <h1>Recently Played Tracks</h1>
+
+    <h1 class="text-2xl font-bold mb-4">Recently Played Tracks</h1>
 
     {% if recentlyplayed %}
-        <ul class="track-list">
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {% for track in recentlyplayed %}
-                <li>
-                    <strong>Track Name:</strong> {{ track.name }}<br>
-                    <strong>Artist:</strong> {{ track.artist }}<br>
-                    <strong>Album:</strong> {{ track.album }}<br>
-                    <strong>Play Time:</strong> {{ track.played_at }}<br>
-                    <strong>Track Link:</strong> <a href="{{ track.track_link }}">{{ track.track_link }}</a><br>
+                <li class="border p-4 rounded-lg">
+                    <strong class="block mb-2">Track Name:</strong> {{ track.name }}<br>
+                    <strong class="block mb-2">Artist:</strong> {{ track.artist }}<br>
+                    <strong class="block mb-2">Album:</strong> {{ track.album }}<br>
+                    <strong class="block mb-2">Play Time:</strong> {{ track.played_at }}<br>
+                    <strong class="block mb-2">Track Link:</strong> <a href="{{ track.track_link }}" class="text-green-500 hover:underline">{{ track.track_link }}</a><br>
                     {% if track.image_url %}
-                        <strong>Album Art:</strong> <img src="{{ track.image_url }}" alt="Album Art" width="200" height="200"><br>
+                        <strong class="block mb-2">Album Art:</strong> <img src="{{ track.image_url }}" alt="Album Art" class="max-w-full mb-2"><br>
                     {% endif %}
-                    <hr>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
         <p>No recently played tracks available.</p>
     {% endif %}
+    
+    <!-- Tailwind CSS JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.js"></script>
 </body>
 
 </html>
