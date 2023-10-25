@@ -1,55 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>{{ title }}</title>
     <!-- Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
-</head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @font-face {
+        font-family: "GothamBold";
+        src: url("fonts/GothamBold.ttf") format("truetype");
+      }
 
-<body class="bg-white text-green-600 p-10">
+      body {
+        font-family: "GothamBold", sans-serif;
+        background-color: #ffffff;
+        color: #1db954;
+        padding: 10px;
+      }
 
-    <ul class="flex mb-10">
-        <li class="mr-4">
-            <a href="/dashboard" class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
-                Dashboard
-            </a>
-        </li>
-        <li class="mr-4">
-            <a href="/toptracks" class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
-                Top Tracks
-            </a>
-        </li>
-        <li class="mr-4">
-            <a href="/topartists" class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
-                Top Artists
-            </a>
-        </li>
-        <li>
-            <a href="/recentlyplayed" class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
-                Recently Played
-            </a>
-        </li>
+      .logout-button {
+        position: absolute;
+        top: 2rem;
+        right: 10px;
+        margin-top: 1rem;
+      }
+
+      .ul {
+        display: flex;
+        justify-content: center; /* Center the links horizontally */
+        list-style: none;
+        margin-bottom: 10px;
+        padding-top: 10px;
+        font-size: 18px;
+      }
+
+      .ul li {
+        margin-right: 20px; /* Add spacing between the links if needed */
+      }
+
+      .ul a {
+        padding: 15px 20px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #1db954;
+      }
+
+      .ul a:hover {
+        background-color: #1db954;
+        color: white;
+      }
+
+      .grid li {
+        background-color: #ffffff;
+        color: #1db954;
+        padding: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .grid li:hover {
+        background-color: #1db954;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body class="bg-white text-green-600 p-10">
+    <ul class="ul">
+      <li class="mr-4">
+        <a
+          href="/dashboard"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded"
+        >
+          Dashboard
+        </a>
+      </li>
+      <li class="mr-4">
+        <a
+          href="/toptracks"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded"
+        >
+          Top Tracks
+        </a>
+      </li>
+      <li class="mr-4">
+        <a
+          href="/topartists"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded"
+        >
+          Top Artists
+        </a>
+      </li>
+      <li>
+        <a
+          href="/recentlyplayed"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded"
+        >
+          Recently Played
+        </a>
+      </li>
     </ul>
 
     <!-- Logout button -->
     <form action="{{ url_for('logout') }}" method="get" class="mb-10">
-        <input type="submit" value="Logout" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+      <input
+        type="submit"
+        value="Logout"
+        class="logout-button bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+      />
     </form>
-    
+
     <h1 class="text-2xl font-bold mb-4">User Playlists</h1>
-    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {% for playlist in playlists_info %}
+
+    <ul
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+    >
+      {% for playlist in playlists_info %}
+      <a href="{{ playlist.link }}" target="_blank">
         <li class="border p-4 rounded-lg">
-            <img src="{{ playlist.image_url }}" alt="{{ playlist.name }} Playlist Image" class="max-w-full mb-2">
-            <a href="{{ playlist.link }}" target="_blank" class="text-green-500 hover:underline">{{ playlist.name }}</a>
+          <img
+            src="{{ playlist.image_url }}"
+            alt="{{ playlist.name }} Playlist Image"
+            class="max-w-full max-h-64 mb-2 object-cover rounded-lg"
+          />
+          <span>{{ playlist.name }}</span>
         </li>
-        {% endfor %}
+      </a>
+      {% endfor %}
     </ul>
 
     <!-- Tailwind CSS JS (optional) -->
     <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.js"></script>
-</body>
-
+  </body>
 </html>
