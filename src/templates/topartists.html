@@ -9,6 +9,10 @@
       rel="stylesheet"
     />
     <style>
+      @font-face {
+        font-family: "GothamBold";
+        src: url("fonts/GothamBold.ttf") format("truetype");
+      }
       body {
         font-family: "GothamBold", sans-serif;
         background-color: #ffffff;
@@ -16,15 +20,11 @@
         padding: 10px;
       }
 
-      @font-face {
-        font-family: "GothamBold";
-        src: url("fonts/GothamBold.ttf") format("truetype");
-      }
-
       .logout-button {
         position: absolute;
-        top: 100px; /* Adjust this value to your preference */
+        top: 2rem;
         right: 10px;
+        margin-top: 1rem;
       }
 
       ul {
@@ -55,18 +55,9 @@
         color: white;
       }
 
-      .logout-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-      }
-
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) minmax(
-            0,
-            1fr
-          );
+        grid-template-columns: repeat(3, minmax(200px, 1fr));
         gap: 1rem;
         margin-top: 1rem;
       }
@@ -74,9 +65,6 @@
       .grid div {
         background-color: white;
         color: #1db954;
-        border: 1px solid #1db954;
-        border-radius: 0.5rem;
-        padding: 1rem;
         text-align: center;
         transition: background-color 0.3s ease, color 0.3s ease;
       }
@@ -84,61 +72,29 @@
       .grid div:hover {
         background-color: #1db954;
         color: white;
-        cursor: pointer;
       }
 
       .grid div img {
         width: 100%;
-        height: auto;
-        max-width: 100%;
-        border-radius: 0.25rem;
-      }
-
-      .grid div a {
-        color: #1db954;
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      .grid div a:hover {
-        text-decoration: underline;
-      }
-
-      h1:hover {
-        color: white;
+        height: 400px;
+        object-fit: contain; /* This property prevents the image from stretching */
       }
     </style>
   </head>
 
-  <body class="bg-white text-green-600 p-10 flex-col items-start">
+  <body class="bg-white text-green-600 p-10">
     <ul class="nav-links">
       <li>
-        <a
-          href="/dashboard"
-          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
-          >Dashboard</a
-        >
+        <a href="/dashboard">Dashboard</a>
       </li>
       <li>
-        <a
-          href="/topartists"
-          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
-          >Top Artists</a
-        >
+        <a href="/toptracks">Top Tracks</a>
       </li>
       <li>
-        <a
-          href="/playlist"
-          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
-          >My Playlists</a
-        >
+        <a href="/playlist">My Playlists</a>
       </li>
       <li>
-        <a
-          href="/recentlyplayed"
-          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
-          >Recently Played</a
-        >
+        <a href="/recentlyplayed">Recently Played</a>
       </li>
     </ul>
 
@@ -152,11 +108,9 @@
     </form>
 
     <h1 class="text-2xl font-bold mb-4">Top Artists</h1>
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-    >
+    <div class="grid">
       {% for artist in artists_info %}
-      <div class="border p-4 rounded-lg">
+      <div>
         {% if artist.image_url %}
         <img
           src="{{ artist.image_url }}"
@@ -164,10 +118,7 @@
           class="max-w-full mb-2"
         />
         {% endif %}
-        <strong class="block mb-2">Artist Name:</strong>
-        <a
-          href="{{ artist.artist_link }}"
-          class="text-green-500 hover:underline"
+        <a href="{{ artist.artist_link }}" target="_blank"
           >{{ artist.artist_name }}</a
         >
       </div>

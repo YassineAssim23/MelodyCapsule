@@ -61,7 +61,7 @@ def get_user_top_artists(token_info, limit=50, time_range="medium_term"):
             image_url = artist['images'][0]['url'] if artist['images'] else None
             artists_info.append({
                 'artist_name': artist_name,
-                'track_link': artist_link,
+                'artist_link': artist_link,
                 'image_url': image_url
             })
         return artists_info
