@@ -32,9 +32,13 @@ def get_user_top_tracks(token_info, limit=50, time_range="medium_term"):
         for track in top_tracks['items']:
             track_name = track['name']
             artist_name = track['artists'][0]['name']
+            album_name = track['album']['name']
+            album_link = track['album']['external_urls']['spotify']
             track_link = track['external_urls']['spotify']
             image_url = track['album']['images'][0]['url'] if track['album']['images'] else None
             tracks_info.append({
+                'album_name': album_name,
+                'album_link': album_link,
                 'track_name': track_name,
                 'artist_name': artist_name,
                 'track_link': track_link,

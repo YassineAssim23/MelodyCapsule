@@ -9,46 +9,122 @@
       rel="stylesheet"
     />
     <style>
+      @font-face {
+        font-family: "GothamBold";
+        src: url("fonts/GothamBold.ttf") format("truetype");
+      }
+
+      h1 {
+        font-family: "GothamBold", sans-serif;
+        /* Other styles for h1 elements */
+      }
+
+      body {
+        font-family: "GothamBold", sans-serif;
+      }
+
       .hover-bg-green-500:hover {
         background-color: #1db954;
         color: #ffffff;
+      }
+
+      .track-card a.album-link:hover {
+        text-decoration: underline;
+        color: white;
+      }
+
+      .track-card {
+        background-color: white;
+        color: green;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      .track-card:hover {
+        background-color: #1db954;
+        color: white;
+        text-decoration: none;
+      }
+
+      .logout-button {
+        position: absolute;
+        top: 2rem;
+        right: 10px;
+        margin-top: 1rem;
+      }
+
+      .time-range-button {
+        cursor: pointer;
+        padding: 8px 16px;
+        background-color: #e0e0e0;
+        color: #333;
+        border: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      .time-range-button.selected {
+        background-color: #1db954;
+        color: white;
+      }
+
+      ul.nav-links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        list-style: none;
+        margin-bottom: 10px;
+      }
+
+      ul.nav-links li {
+        margin-right: 20px;
+        font-size: 18px; /* You can adjust the font size as needed */
+      }
+
+      ul.nav-links li:last-child {
+        margin-right: 0;
+      }
+
+      ul.nav-links li a {
+        padding: 10px 20px; /* Adjust the padding as needed */
+        transition: all 0.3s ease; /* Add transition for smooth hover effect */
+      }
+
+      ul.nav-links li a:hover {
+        background-color: #1db954;
+        color: white;
       }
     </style>
   </head>
 
   <body class="bg-white text-green-600 p-10 flex-col items-start">
-    <ul class="flex mb-10">
-      <li class="mr-4">
+    <ul class="nav-links">
+      <li>
         <a
           href="/dashboard"
-          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 px-2 py-1 rounded"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
+          >Dashboard</a
         >
-          Dashboard
-        </a>
       </li>
-      <li class="mr-4">
+      <li>
         <a
           href="/topartists"
-          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 px-2 py-1 rounded"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
+          >Top Artists</a
         >
-          Top Artists
-        </a>
       </li>
       <li>
         <a
           href="/playlist"
-          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 px-2 py-1 rounded"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
+          >My Playlists</a
         >
-          My Playlists
-        </a>
       </li>
-      <li class="mr-4">
+      <li>
         <a
           href="/recentlyplayed"
-          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 px-2 py-1 rounded"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
+          >Recently Played</a
         >
-          Recently Played
-        </a>
       </li>
     </ul>
 
@@ -57,64 +133,96 @@
       <input
         type="submit"
         value="Logout"
-        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out logout-button"
       />
     </form>
 
     <div class="ml-8">
       <h2 class="text-2xl font-bold mb-2">Top Tracks:</h2>
-      <label for="time-range" class="block mb-4">Select Time Range:</label>
+      <div class="flex mb-4">
+        <button
+          class="time-range-button mr-2 {% if selected_time_range == 'short_term' %}selected{% endif %}"
+          data-value="short_term"
+        >
+          Last 4 Weeks
+        </button>
+        <button
+          class="time-range-button mr-2 {% if selected_time_range == 'medium_term' %}selected{% endif %}"
+          data-value="medium_term"
+        >
+          Last 6 Months
+        </button>
+        <button
+          class="time-range-button {% if selected_time_range == 'long_term' %}selected{% endif %}"
+          data-value="long_term"
+        >
+          All Time
+        </button>
+      </div>
 
       <form id="filter-form" action="/toptracks" method="get">
-        <select id="time-range" name="time-range" class="mb-6 p-2 border rounded">
-          <option value="short_term">Last 4 Weeks</option>
-          <option value="medium_term">Last 6 Months</option>
-          <option value="long_term">All Time</option>
-        </select>
+        <input
+          type="hidden"
+          id="selected-time-range"
+          name="time-range"
+          value="{{ selected_time_range }}"
+        />
       </form>
-      
-      <script>
-        // Get the select element
-        var selectElement = document.getElementById('time-range');
-      
-        // Get the selected time range value from the server-side variable
-        var selectedTimeRange = "{{ selected_time_range }}";
-      
-        // Set the selected option in the dropdown menu based on the server-side variable
-        if (selectedTimeRange) {
-          for (var i = 0; i < selectElement.options.length; i++) {
-            if (selectElement.options[i].value === selectedTimeRange) {
-              selectElement.selectedIndex = i;
-              break;
-            }
-          }
-        }
-      
-        // Add event listener to detect changes in the select element
-        selectElement.addEventListener('change', function() {
-          // Get the form element
-          var formElement = document.getElementById('filter-form');
-          
-          // Submit the form when the select element changes
-          formElement.submit();
-        });
-      </script>
-      
-      
 
-      <ul class="grid grid-cols-3 gap-4">
+      <ul class="grid grid-cols-5 gap-4">
         {% for track in tracks_info %}
-        <li class="border p-4 rounded-lg">
-          <a href="{{ track.track_link }}" target="_blank" class="block hover:underline transition duration-300 ease-in-out">
-            <img src="{{ track.image_url }}" alt="Track Image" class="max-w-full mb-2" />
-            <strong class="block mb-2"></strong> {{ track.track_name }}<br />
-            <strong class="block mb-2"></strong> {{ track.artist_name }}<br />
-            <!-- Optionally, you can display the track link here if you want -->
+        <li class="border p-4 rounded-lg track-card">
+          <a
+            href="{{ track.track_link }}"
+            target="_blank"
+            class="block transition duration-300 ease-in-out"
+          >
+            <img
+              src="{{ track.image_url }}"
+              alt="Track Image"
+              class="max-w-full mb-2"
+            />
+            <div class="mb-2">
+              <strong>Track Name:</strong> {{ track.track_name }}
+            </div>
+            <div class="mb-2">
+              <strong>Artist Name:</strong> {{ track.artist_name }}
+            </div>
+            <div class="mb-2">
+              <strong>Album Name:</strong> {{ track.album_name }}
+            </div>
+            <div class="mb-2">
+              <strong>Album Link:</strong>
+              <a
+                href="{{ track.album_link }}"
+                target="_blank"
+                class="album-link"
+              >
+                {{ track.album_link }}
+              </a>
+            </div>
           </a>
         </li>
         {% endfor %}
       </ul>
-      
     </div>
+
+    <script>
+      var timeRangeButtons = document.querySelectorAll(".time-range-button");
+
+      timeRangeButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          timeRangeButtons.forEach(function (btn) {
+            btn.classList.remove("selected");
+          });
+          button.classList.add("selected");
+          var selectedTimeRange = button.getAttribute("data-value");
+          var hiddenInput = document.getElementById("selected-time-range");
+          hiddenInput.value = selectedTimeRange;
+          var formElement = document.getElementById("filter-form");
+          formElement.submit();
+        });
+      });
+    </script>
   </body>
 </html>

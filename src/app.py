@@ -1,4 +1,4 @@
-from flask import Flask, request, session, redirect, url_for, render_template
+from flask import Flask, request, send_from_directory, session, redirect, url_for, render_template
 import spotify_utils
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -23,6 +23,13 @@ def create_spotify_oauth():
 
 app = Flask(__name__)
 
+
+@app.route('/fonts/<path:filename>')
+def custom_static(filename):
+    root_dir = os.path.dirname(os.getcwd())  # Get the parent directory of your Flask app
+    return send_from_directory(os.path.join(root_dir, 'src', 'templates', 'fonts'), filename)
+
+    
 @app.after_request
 def add_header(response):
     response.cache_control.no_store = True
@@ -88,6 +95,7 @@ def redirectPage():
     token_info = sp_oauth.get_access_token(code)
     session[TOKEN_INFO] = token_info
     return redirect(url_for("dashboard"))
+
 
 def get_token():
     token_info = session.get(TOKEN_INFO, None)
