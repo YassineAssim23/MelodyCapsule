@@ -1,47 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Top Artists</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
-</head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "GothamBold", sans-serif;
+        background-color: #ffffff;
+        color: #1db954;
+        padding: 10px;
+      }
 
-<body class="bg-white text-green-600 p-10">
-    <ul class="flex mb-10">
-        <li class="mr-4 hover:text-white transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
-            <a href="/dashboard">Dashboard</a>
-        </li>
-        <li class="mr-4 hover:text-white transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
-            <a href="/toptracks">Top Tracks</a>
-        </li>
-        <li class="mr-4 hover:text-white transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
-            <a href="/recentlyplayed">Recently Played</a>
-        </li>
-        <li class="hover:text-white transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
-            <a href="/playlist">My Playlists</a>
-        </li>
+      @font-face {
+        font-family: "GothamBold";
+        src: url("fonts/GothamBold.ttf") format("truetype");
+      }
+
+      .logout-button {
+        position: absolute;
+        top: 100px; /* Adjust this value to your preference */
+        right: 10px;
+      }
+
+      ul {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        margin-bottom: 10px;
+        padding-top: 10px;
+      }
+
+      ul li {
+        margin-right: 20px;
+      }
+
+      ul li:last-child {
+        margin-right: 0;
+      }
+
+      ul li a {
+        padding: 15px 20px;
+        transition: all 0.3s ease;
+        color: #1db954;
+        text-decoration: none;
+      }
+
+      ul li a:hover {
+        background-color: #1db954;
+        color: white;
+      }
+
+      .logout-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) minmax(
+            0,
+            1fr
+          );
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .grid div {
+        background-color: white;
+        color: #1db954;
+        border: 1px solid #1db954;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        text-align: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      .grid div:hover {
+        background-color: #1db954;
+        color: white;
+        cursor: pointer;
+      }
+
+      .grid div img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        border-radius: 0.25rem;
+      }
+
+      .grid div a {
+        color: #1db954;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .grid div a:hover {
+        text-decoration: underline;
+      }
+
+      h1:hover {
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body class="bg-white text-green-600 p-10 flex-col items-start">
+    <ul class="nav-links">
+      <li>
+        <a
+          href="/dashboard"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
+          >Dashboard</a
+        >
+      </li>
+      <li>
+        <a
+          href="/topartists"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
+          >Top Artists</a
+        >
+      </li>
+      <li>
+        <a
+          href="/playlist"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
+          >My Playlists</a
+        >
+      </li>
+      <li>
+        <a
+          href="/recentlyplayed"
+          class="hover:text-green-800 transition duration-300 ease-in-out hover-bg-green-500 rounded"
+          >Recently Played</a
+        >
+      </li>
     </ul>
 
     <!-- Logout button -->
     <form action="{{ url_for('logout') }}" method="get" class="mb-10">
-        <input type="submit" value="Logout"
-            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+      <input
+        type="submit"
+        value="Logout"
+        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out logout-button"
+      />
     </form>
 
     <h1 class="text-2xl font-bold mb-4">Top Artists</h1>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {% for artist in artists_info %}
-        <div class="border p-4 rounded-lg">
-            {% if artist.image_url %}
-            <img src="{{ artist.image_url }}" alt="{{ artist.artist_name }}" class="max-w-full mb-2">
-            {% endif %}
-            <strong class="block mb-2">Artist Name:</strong> <a href="{{ artist.artist_link }}"
-                class="text-green-500 hover:underline">{{ artist.artist_name }}</a>
-        </div>
-        {% endfor %}
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+    >
+      {% for artist in artists_info %}
+      <div class="border p-4 rounded-lg">
+        {% if artist.image_url %}
+        <img
+          src="{{ artist.image_url }}"
+          alt="{{ artist.artist_name }}"
+          class="max-w-full mb-2"
+        />
+        {% endif %}
+        <strong class="block mb-2">Artist Name:</strong>
+        <a
+          href="{{ artist.artist_link }}"
+          class="text-green-500 hover:underline"
+          >{{ artist.artist_name }}</a
+        >
+      </div>
+      {% endfor %}
     </div>
-</body>
-
+  </body>
 </html>
