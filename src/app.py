@@ -130,10 +130,11 @@ def toptracks():
 @app.route('/topartists')
 def topartists():
     user_token = get_token()
+    selected_time_range = request.args.get('time_range', default='short_term', type=str)
     if user_token:
         artists_info = spotify_utils.get_user_top_artists(user_token)
         if artists_info:
-            return render_template('topartists.html', title='Welcome to MelodyCapsule!', artists_info=artists_info)
+            return render_template('topartists.html', title='Welcome to MelodyCapsule!', artists_info=artists_info, selected_time_range=selected_time_range)
         else:
             error_message = "Error retrieving top tracks. Please try again later."
             return render_template('error.html', error_message=error_message)

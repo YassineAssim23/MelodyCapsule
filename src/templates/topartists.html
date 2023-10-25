@@ -20,6 +20,21 @@
         padding: 10px;
       }
 
+      .time-range-button {
+        cursor: pointer;
+        padding: 8px 16px;
+        background-color: #e0e0e0;
+        color: #333;
+        border: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      .time-range-button.selected {
+        background-color: #1db954;
+        color: white;
+      }
+
       .logout-button {
         position: absolute;
         top: 2rem;
@@ -83,7 +98,7 @@
   </head>
 
   <body class="bg-white text-green-600 p-10">
-    <ul class="nav-links">
+    <ul class="ul">
       <li>
         <a href="/dashboard">Dashboard</a>
       </li>
@@ -107,22 +122,65 @@
       />
     </form>
 
-    <h1 class="text-2xl font-bold mb-4">Top Artists</h1>
+    <h1 class="text-2xl font-bold mb-4">Top Artists:</h1>
+
+    <div class="mb-4">
+      <button
+        class="time-range-button mr-2 {% if selected_time_range == 'short_term' %}selected{% endif %}"
+        data-value="short_term"
+      >
+        Last 4 Weeks
+      </button>
+      <button
+        class="time-range-button mr-2 {% if selected_time_range == 'medium_term' %}selected{% endif %}"
+        data-value="medium_term"
+      >
+        Last 6 Months
+      </button>
+      <button
+        class="time-range-button {% if selected_time_range == 'long_term' %}selected{% endif %}"
+        data-value="long_term"
+      >
+        All Time
+      </button>
+    </div>
+
     <div class="grid">
       {% for artist in artists_info %}
-      <div>
-        {% if artist.image_url %}
-        <img
-          src="{{ artist.image_url }}"
-          alt="{{ artist.artist_name }}"
-          class="max-w-full mb-2"
-        />
-        {% endif %}
-        <a href="{{ artist.artist_link }}" target="_blank"
-          >{{ artist.artist_name }}</a
-        >
-      </div>
+      <a href="{{ artist.artist_link }}" target="_blank" class="grid-item">
+        <div>
+          {% if artist.image_url %}
+          <img
+            src="{{ artist.image_url }}"
+            alt="{{ artist.artist_name }}"
+            class="max-w-full mb-2"
+          />
+          {% endif %}
+          <span>{{ artist.artist_name }}</span>
+        </div>
+      </a>
       {% endfor %}
     </div>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var timeRangeButtons = document.querySelectorAll(".time-range-button");
+
+        timeRangeButtons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            timeRangeButtons.forEach(function (btn) {
+              btn.classList.remove("selected");
+            });
+            button.classList.add("selected");
+            var selectedTimeRange = button.getAttribute("data-value");
+
+            // Update the URL with the selected time range parameter
+            var currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set("time_range", selectedTimeRange);
+            window.location.href = currentUrl.href;
+          });
+        });
+      });
+    </script>
   </body>
 </html>

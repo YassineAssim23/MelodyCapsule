@@ -1,3 +1,4 @@
+from flask import request
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
@@ -50,10 +51,23 @@ def get_user_top_tracks(token_info, limit=50, time_range="medium_term"):
         return None
 
 
-def get_user_top_artists(token_info, limit=50, time_range="medium_term"):
+
+def get_user_top_artists_medium_term(token_info, limit=50):
+    return get_user_top_artists(token_info, limit=limit, time_range="medium_term")
+
+def get_user_top_artists_short_term(token_info, limit=50):
+    return get_user_top_artists(token_info, limit=limit, time_range="short_term")
+
+def get_user_top_artists_long_term(token_info, limit=50):
+    return get_user_top_artists(token_info, limit=limit, time_range="long_term")
+
+
+def get_user_top_artists(token_info, limit=50):
+    # Get the selected time range from the URL parameters
+    selected_time_range = request.args.get('time_range', default='medium_term', type=str)
     sp = create_spotify_client(token_info)
     try:
-        top_artists = sp.current_user_top_artists(limit=limit, time_range=time_range)
+        top_artists = sp.current_user_top_artists(limit=limit, time_range=selected_time_range)
         artists_info = []
         for artist in top_artists['items']:
             artist_name = artist['name']
