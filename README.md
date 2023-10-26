@@ -1,4 +1,4 @@
-# Project Name
+# MelodyCapsule
 
 MelodyCapsule is a web application that allows users to explore their Spotify music preferences in an interactive and visually appealing way. Users can log in with their Spotify accounts, granting the application access to their music library. MelodyCapsule provides insights into the user's top tracks, top artists, recently played tracks, playlists, and more.
 
