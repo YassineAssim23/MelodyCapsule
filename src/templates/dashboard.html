@@ -1,54 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spotify Data</title>
     <!-- Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
-</head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @font-face {
+        font-family: "GothamBold";
+        src: url("fonts/GothamBold.ttf") format("truetype");
+      }
+      body {
+        font-family: "GothamBold", sans-serif;
+        background-color: #ffffff;
+        color: #1db954;
+        padding: 10px;
+      }
 
-<body class="bg-white text-green-600">
-    <div class="container mx-auto p-10 bg-white rounded-lg shadow-md">
-        <h1 class="text-3xl font-bold mb-6">Welcome to MelodyCapsule!</h1>
+      .nav-container {
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0; /* Add padding to the top and bottom of the navigation bar */
+      }
 
-        {% if user_info %}
-            <h2 class="text-xl font-semibold mb-2">User Information:</h2>
-            <p class="mb-4"><strong>Display Name:</strong> {{ user_info.display_name }}</p>
-            {% if user_info.images %}
-                <img src="{{ user_info.images[0].url }}" alt="Profile Picture" class="w-32 h-32 object-cover rounded-full mb-4">
-            {% else %}
-                <p>No profile picture available.</p>
-            {% endif %}
-        {% else %}
-            <p class="mb-4">Failed to retrieve user information.</p>
-        {% endif %}
+      .nav-container ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
 
-        {% if devices %}
-            <h2 class="text-xl font-semibold mb-2">Available Devices:</h2>
-            <ul class="list-disc ml-6 mb-4">
-                {% for device in devices %}
-                    <li>{{ device.name }} - {{ device.type }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No devices available.</p>
-        {% endif %}
+      .nav-container ul li {
+        margin-right: 1.5rem; /* Adjust spacing between links */
+      }
 
-        <h2 class="text-xl font-semibold mb-2">Navigate to:</h2>
-        <ul class="list-disc ml-6 mb-4">
-            <li><a href="/toptracks" class="text-green-600 hover:underline">Top Tracks</a></li>
-            <li><a href="/topartists" class="text-green-600 hover:underline">Top Artists</a></li>
-            <li><a href="/recentlyplayed" class="text-green-600 hover:underline">Recently Played Tracks</a></li>
-            <li><a href="/playlist" class="text-green-600 hover:underline">Playlists</a></li>
-        </ul>
+      .nav-container ul li a {
+        font-size: 1.5rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        padding: 10px 20px; /* Add padding to the links */
+      }
 
-        <!-- Logout button -->
-        <form action="{{ url_for('logout') }}" method="get">
-            <input type="submit" value="Logout" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
-        </form>
+      .nav-a:hover {
+        background-color: #1db954;
+        color: white;
+        padding: 12px 22px; /* Increase padding on hover to make the background bigger */
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center; /* Center align text within container */
+        margin-bottom: 3rem;
+      }
+
+      .container h1 {
+        font-size: 3rem; /* Larger heading font size */
+        margin-bottom: 1rem;
+      }
+
+      .container h2 {
+        font-size: 2rem; /* Larger subheading font size */
+        margin-bottom: 1rem;
+      }
+
+      .container p {
+        font-size: 1.2rem; /* Larger paragraph font size */
+        margin-bottom: 1rem;
+      }
+
+      .container ul li {
+        font-size: 1.2rem; /* Larger list item font size */
+        margin-bottom: 0.5rem;
+      }
+
+      .container a {
+        font-size: 1.2rem; /* Larger link font size */
+        color: #1db954;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .container form {
+        margin-top: 3rem;
+      }
+
+      .logout-button {
+        position: absolute;
+        top: 2rem;
+        right: 10px;
+        margin-bottom: 0rem;
+      }
+    </style>
+  </head>
+
+  <body class="body">
+    <div class="nav-container">
+      <ul class="list-disc ml-6 mb-4">
+        <li>
+          <a href="/toptracks" class="nav-a">Top Tracks</a>
+        </li>
+        <li>
+          <a href="/topartists" class="nav-a">Top Artists</a>
+        </li>
+        <li>
+          <a href="/recentlyplayed" class="nav-a">Recently Played</a>
+        </li>
+        <li>
+          <a href="/playlist" class="nav-a">Playlists</a>
+        </li>
+      </ul>
+      <!-- Logout button -->
+      <form action="{{ url_for('logout') }}" method="get">
+        <input
+          type="submit"
+          value="Logout"
+          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out logout-button"
+        />
+      </form>
     </div>
-</body>
 
+    <div class="container mx-auto p-10 bg-white rounded-lg shadow-md">
+      <h1 class="">Welcome</h1>
+      {{ user_info.display_name }} {% if user_info %} {% if user_info.images %}
+      <img
+        src="{{ user_info.images[0].url }}"
+        alt="Profile Picture"
+        class="w-32 h-32 object-cover rounded-full mb-4"
+      />
+      {% else %}
+      <p>No profile picture available.</p>
+      {% endif %} {% else %}
+      <p class="mb-4">Failed to retrieve user information.</p>
+      {% endif %} {% if devices %}
+      <h2 class="text-xl font-semibold mb-2">Available Devices:</h2>
+      <ul class="list-disc ml-6 mb-4">
+        {% for device in devices %}
+        <li>{{ device.name }} - {{ device.type }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No devices available.</p>
+      {% endif %}
+    </div>
+  </body>
 </html>
