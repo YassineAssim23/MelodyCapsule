@@ -1,2 +1,4 @@
 [build]
-  command = "python app.py"
+publish = "F:\\ProgrammingFolders\\MelodyCapsule\\src"
+command = "python app.py"
+functions = "F:\\ProgrammingFolders\\MelodyCapsule\\src"
