@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spotify Data</title>
-    <!-- Tailwind CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
       rel="stylesheet"
@@ -14,17 +13,18 @@
         font-family: "GothamBold";
         src: url("fonts/GothamBold.ttf") format("truetype");
       }
+
       body {
         font-family: "GothamBold", sans-serif;
-        background-color: #ffffff;
-        color: #1db954;
+        background-color: #191414;
+        color: white;
         padding: 10px;
       }
 
       .nav-container {
         display: flex;
         justify-content: center;
-        padding: 1rem 0; /* Add padding to the top and bottom of the navigation bar */
+        padding: 1rem 0;
       }
 
       .nav-container ul {
@@ -35,54 +35,55 @@
       }
 
       .nav-container ul li {
-        margin-right: 1.5rem; /* Adjust spacing between links */
+        margin-right: 1.5rem;
       }
 
       .nav-container ul li a {
         font-size: 1.5rem;
         text-decoration: none;
         transition: all 0.3s ease;
-        padding: 10px 20px; /* Add padding to the links */
+        padding: 10px 20px;
       }
 
-      .nav-a:hover {
+      .nav-container ul li a:hover {
         background-color: #1db954;
         color: white;
-        padding: 12px 22px; /* Increase padding on hover to make the background bigger */
+        padding: 12px 22px;
+        border-radius: 20px; /* Add this line to make the background rounded */
       }
 
       .container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start; /* Align content to the top */
         height: 100vh;
-        text-align: center; /* Center align text within container */
-        margin-bottom: 3rem;
+        text-align: center;
+        margin-top: 50px; /* Adjust the margin from the top */
       }
 
       .container h1 {
-        font-size: 3rem; /* Larger heading font size */
-        margin-bottom: 1rem;
+        padding: 10px;
+        font-size: 3rem;
       }
 
       .container h2 {
-        font-size: 2rem; /* Larger subheading font size */
+        font-size: 2rem;
         margin-bottom: 1rem;
       }
 
       .container p {
-        font-size: 1.2rem; /* Larger paragraph font size */
+        font-size: 1.2rem;
         margin-bottom: 1rem;
       }
 
       .container ul li {
-        font-size: 1.2rem; /* Larger list item font size */
+        font-size: 1.2rem;
         margin-bottom: 0.5rem;
       }
 
       .container a {
-        font-size: 1.2rem; /* Larger link font size */
+        font-size: 1.2rem;
         color: #1db954;
         transition: all 0.3s ease-in-out;
       }
@@ -97,10 +98,37 @@
         right: 10px;
         margin-bottom: 0rem;
       }
+
+      .logo {
+        position: absolute;
+        top: 2rem;
+        left: 10px;
+        margin-bottom: 0rem;
+        width: 100px;
+        height: auto;
+      }
+
+      .connected-devices {
+        position: fixed;
+        bottom: 80px; /* Adjust the distance from the bottom */
+        left: 10px; /* Adjust the distance from the right */
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 0.8rem;
+      }
+
+
+      .devices-container {
+          margin-bottom: 0;
+      }
     </style>
   </head>
 
   <body class="body">
+    <a href="/dashboard">
+      <img src="fonts/mclogo.png" alt="MCLogo" class="logo" />
+    </a>
     <div class="nav-container">
       <ul class="list-disc ml-6 mb-4">
         <li>
@@ -116,7 +144,6 @@
           <a href="/playlist" class="nav-a">Playlists</a>
         </li>
       </ul>
-      <!-- Logout button -->
       <form action="{{ url_for('logout') }}" method="get">
         <input
           type="submit"
@@ -126,9 +153,11 @@
       </form>
     </div>
 
-    <div class="container mx-auto p-10 bg-white rounded-lg shadow-md">
-      <h1 class="">Welcome</h1>
-      {{ user_info.display_name }} {% if user_info %} {% if user_info.images %}
+    <div class="container mx-auto p-10 rounded-lg shadow-md">
+      <h1 class="">
+        Welcome {% if user_info %} {{ user_info.display_name }} {% else %} Guest {% endif %}
+      </h1>
+      {% if user_info %} {% if user_info.images %}
       <img
         src="{{ user_info.images[0].url }}"
         alt="Profile Picture"
@@ -138,16 +167,17 @@
       <p>No profile picture available.</p>
       {% endif %} {% else %}
       <p class="mb-4">Failed to retrieve user information.</p>
-      {% endif %} {% if devices %}
-      <h2 class="text-xl font-semibold mb-2">Available Devices:</h2>
-      <ul class="list-disc ml-6 mb-4">
-        {% for device in devices %}
-        <li>{{ device.name }} - {{ device.type }}</li>
-        {% endfor %}
-      </ul>
-      {% else %}
-      <p>No devices available.</p>
-      {% endif %}
+      {% endif %} <div class="connected-devices">
+        {% if devices %}
+        <div class="devices-container">
+            <h2 class="text-sm font-semibold mb-2">Connected Devices:</h2>
+            <ul class="list-disc ml-2 mb-2">
+                {% for device in devices %}
+                <li>{{ device.name }} - {{ device.type }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
     </div>
   </body>
 </html>

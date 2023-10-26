@@ -1,20 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MelodyCapsule</title>
     <!-- Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
-</head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @font-face {
+        font-family: "GothamBold";
+        src: url("fonts/GothamBold.ttf") format("truetype");
+      }
 
-<body class="bg-white">
+      .body-container {
+        background-color: #191414;
+        color: white;
+        font-family: "GothamBold", sans-serif;
+        height: 100vh; /* Make the body at least as tall as the viewport */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+
+  <body class="body-container">
+      <img src="fonts/mclogo.png" alt="MCLogo" class="logo" />
     <div class="container mx-auto text-center mt-20 mb-20">
-        <h1 class="text-4xl text-green-600 font-bold mb-6">MelodyCapsule</h1>
-        <p class="text-2xl text-gray-700 mb-12">Discover your favorite tunes!</p>
-        <a href="{{ url_for('login') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition duration-300 ease-in-out">Login with Spotify</a>
+      <h1 class="text-4xl font-bold mb-6">MelodyCapsule</h1>
+      <p class="text-2xl mb-12">Discover your favorite tunes!</p>
+      <a
+        href="{{ url_for('login') }}"
+        class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition duration-300 ease-in-out"
+        >Login with Spotify</a
+      >
     </div>
-</body>
-
+  </body>
 </html>

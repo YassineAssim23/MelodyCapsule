@@ -17,8 +17,8 @@
 
       body {
         font-family: "GothamBold", sans-serif;
-        background-color: #ffffff;
-        color: #1db954;
+        background-color: #191414;
+        color: #ffffff;
         padding: 10px;
       }
 
@@ -26,7 +26,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #1db954;
         padding: 10px;
       }
 
@@ -35,19 +34,49 @@
       }
 
       ul.nav-links li a {
-        color: #ffffff;
+        color: white;
         font-size: 18px; /* Adjust the font size as needed */
         transition: all 0.3s ease-in-out;
+        margin-bottom: 60px;
       }
 
       ul.nav-links li a:hover {
-        background-color: #ffffff;
-        color: #1db954;
+        background-color: #1db954;
+        color: #ffffff;
+        padding: 12px 22px;
+      }
+
+      .logo {
+        position: absolute;
+        top: 2rem;
+        left: 10px;
+        margin-bottom: 0rem;
+        width: 100px; /* Set the desired width for the logo */
+        height: auto; /* Automatically adjust the height while maintaining the aspect ratio */
+      }
+
+      .logout-button {
+        position: absolute;
+        top: 2rem;
+        right: 10px;
+        margin-top: 1rem;
+      }
+
+      .body-container {
+        margin-top: 100px;
+      }
+
+      .nav-links {
+        margin-top: 35px;
       }
     </style>
   </head>
 
-  <body class="bg-white text-green-600 p-10">
+  <body>
+    <a href="/dashboard">
+      <img src="fonts/mclogo.png" alt="MCLogo" class="logo"
+    /></a>
+
     <ul class="nav-links mb-10">
       <li>
         <a href="/dashboard" class="px-2 py-1 rounded">Dashboard</a>
@@ -68,39 +97,41 @@
       <input
         type="submit"
         value="Logout"
-        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+        class="bg-green-500 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out logout-button"
       />
     </form>
 
-    <h1 class="text-2xl font-bold mb-4">Recently Played Tracks</h1>
+    <div class="body-container">
+      <h1 class="text-2xl font-bold mb-4">Recently Played Tracks</h1>
 
-    {% if recentlyplayed %}
-    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {% for track in recentlyplayed %}
-      <li class="border p-4 rounded-lg">
-        {% if track.image_url %}
-        <img
-          src="{{ track.image_url }}"
-          alt="Album Art"
-          class="max-w-full mb-2"
-        /><br />
-        {% endif %}
+      {% if recentlyplayed %}
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for track in recentlyplayed %}
         <a
           href="{{ track.track_link }}"
           target="_blank"
-          class="block mb-2 hover:underline"
+          class="rounded-lg hover:bg-green-500 hover:text-white block mb-4 p-4"
         >
-          <strong>Track Name:</strong> {{ track.name }}<br />
-          <strong>Artist:</strong> {{ track.artist }}<br />
-          <strong>Album:</strong> {{ track.album }}<br />
-          <strong>Play Time:</strong> {{ track.played_at }}<br />
+          <li>
+            {% if track.image_url %}
+            <img
+              src="{{ track.image_url }}"
+              alt="Album Art"
+              class="max-w-full mb-2"
+            /><br />
+            {% endif %}
+            <strong>Track Name:</strong> {{ track.name }}<br />
+            <strong>Artist:</strong> {{ track.artist }}<br />
+            <strong>Album:</strong> {{ track.album }}<br />
+            <strong>Play Time:</strong> {{ track.played_at }}<br />
+          </li>
         </a>
-      </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p>No recently played tracks available.</p>
-    {% endif %}
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No recently played tracks available.</p>
+      {% endif %}
+    </div>
 
     <!-- Tailwind CSS JS (optional) -->
     <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.js"></script>
