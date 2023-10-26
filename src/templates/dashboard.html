@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta tags for character set and responsive design -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Title of the webpage -->
     <title>Spotify Data</title>
+    <!-- Link to Tailwind CSS framework -->
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
       rel="stylesheet"
     />
+    <!-- Internal CSS styles -->
     <style>
+      /* Font styling */
       @font-face {
         font-family: "GothamBold";
         src: url("fonts/GothamBold.ttf") format("truetype");
       }
 
+      /* Body styling */
       body {
         font-family: "GothamBold", sans-serif;
         background-color: #191414;
@@ -21,6 +27,7 @@
         padding: 10px;
       }
 
+      /* Navigation bar styling */
       .nav-container {
         display: flex;
         justify-content: center;
@@ -52,6 +59,7 @@
         border-radius: 20px; /* Add this line to make the background rounded */
       }
 
+      /* Main content container styling */
       .container {
         display: flex;
         flex-direction: column;
@@ -92,6 +100,7 @@
         margin-top: 3rem;
       }
 
+      /* Logout button styling */
       .logout-button {
         position: absolute;
         top: 2rem;
@@ -99,6 +108,7 @@
         margin-bottom: 0rem;
       }
 
+      /* Logo styling */
       .logo {
         position: absolute;
         top: 2rem;
@@ -108,6 +118,7 @@
         height: auto;
       }
 
+      /* Connected devices info styling */
       .connected-devices {
         position: fixed;
         bottom: 80px; /* Adjust the distance from the bottom */
@@ -118,19 +129,22 @@
         font-size: 0.8rem;
       }
 
-
+      /* Additional styling for devices container */
       .devices-container {
-          margin-bottom: 0;
+        margin-bottom: 0;
       }
     </style>
   </head>
 
   <body class="body">
+    <!-- Spotify logo linking to dashboard -->
     <a href="/dashboard">
       <img src="fonts/mclogo.png" alt="MCLogo" class="logo" />
     </a>
+    <!-- Navigation bar -->
     <div class="nav-container">
       <ul class="list-disc ml-6 mb-4">
+        <!-- Navigation links -->
         <li>
           <a href="/toptracks" class="nav-a">Top Tracks</a>
         </li>
@@ -144,6 +158,7 @@
           <a href="/playlist" class="nav-a">Playlists</a>
         </li>
       </ul>
+      <!-- Logout button -->
       <form action="{{ url_for('logout') }}" method="get">
         <input
           type="submit"
@@ -153,31 +168,41 @@
       </form>
     </div>
 
+    <!-- Main content container -->
     <div class="container mx-auto p-10 rounded-lg shadow-md">
+      <!-- Welcome message with user information -->
       <h1 class="">
-        Welcome {% if user_info %} {{ user_info.display_name }} {% else %} Guest {% endif %}
+        Welcome {% if user_info %} {{ user_info.display_name }} {% else %} Guest
+        {% endif %}
       </h1>
+      <!-- User profile picture or error message if not available -->
       {% if user_info %} {% if user_info.images %}
       <img
         src="{{ user_info.images[0].url }}"
         alt="Profile Picture"
         class="w-32 h-32 object-cover rounded-full mb-4"
       />
+      <!-- Display user's followers count -->
+      <p>Followers: {{ followers_count }}</p>
+      <!-- Display user's following count -->
       {% else %}
       <p>No profile picture available.</p>
       {% endif %} {% else %}
       <p class="mb-4">Failed to retrieve user information.</p>
-      {% endif %} <div class="connected-devices">
+      {% endif %}
+      <!-- Connected devices information -->
+      <div class="connected-devices">
         {% if devices %}
         <div class="devices-container">
-            <h2 class="text-sm font-semibold mb-2">Connected Devices:</h2>
-            <ul class="list-disc ml-2 mb-2">
-                {% for device in devices %}
-                <li>{{ device.name }} - {{ device.type }}</li>
-                {% endfor %}
-            </ul>
+          <h2 class="text-sm font-semibold mb-2">Connected Devices:</h2>
+          <ul class="list-disc ml-2 mb-2">
+            {% for device in devices %}
+            <li>{{ device.name }} - {{ device.type }}</li>
+            {% endfor %}
+          </ul>
         </div>
         {% endif %}
+      </div>
     </div>
   </body>
 </html>

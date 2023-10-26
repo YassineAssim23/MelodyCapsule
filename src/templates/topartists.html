@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta tags for character set and viewport -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Title of the webpage -->
     <title>Top Artists</title>
+    <!-- Link to the Tailwind CSS framework -->
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
       rel="stylesheet"
     />
+    <!-- Internal styles and font definition -->
     <style>
+      /* Font definition */
       @font-face {
         font-family: "GothamBold";
         src: url("fonts/GothamBold.ttf") format("truetype");
       }
+      /* Body styles */
       body {
         font-family: "GothamBold", sans-serif;
         background-color: #191414;
         color: #ffffff;
         padding: 10px;
       }
-
+      /* Styles for time range buttons */
       .time-range-button {
         cursor: pointer;
         padding: 8px 16px;
@@ -29,19 +35,18 @@
         border-radius: 4px;
         transition: background-color 0.3s ease;
       }
-
       .time-range-button.selected {
         background-color: #1db954;
         color: white;
       }
-
+      /* Styles for navigation and logout button */
       .logout-button {
         position: absolute;
         top: 2rem;
         right: 10px;
         margin-top: 1rem;
       }
-
+      /* Styles for the navigation menu */
       ul {
         display: flex;
         justify-content: center;
@@ -51,35 +56,30 @@
         margin-right: 20px;
         font-size: 18px; /* You can adjust the font size as needed */
       }
-
       ul li {
         margin-right: 20px;
       }
-
       ul li:last-child {
         margin-right: 0;
       }
-
       ul li a {
         padding: 15px 20px;
         transition: all 0.3s ease;
         color: #ffffff;
         text-decoration: none;
       }
-
       ul li a:hover {
         background-color: #1db954;
         color: white;
         border-radius: 20px;
       }
-
+      /* Styles for grid layout */
       .grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(200px, 1fr));
         gap: 1rem;
         margin-top: 1rem;
       }
-
       .grid div {
         border: 1px solid #ffffff; /* Increased border size and added padding */
         border-radius: 8px;
@@ -89,20 +89,18 @@
         transition: background-color 0.3s ease, color 0.3s ease;
         padding: 20px; /* Added padding around the image */
       }
-
       .grid div:hover {
         background-color: #1db954;
         color: white;
         border-radius: 20px;
       }
-
       .grid div img {
         border-radius: 8px; /* Rounded corners */
         width: 100%;
         height: 400px;
         object-fit: contain; /* This property prevents the image from stretching */
       }
-
+      /* Styles for the logo */
       .logo {
         position: absolute;
         top: 2rem;
@@ -115,9 +113,10 @@
   </head>
 
   <body class="p-10">
+    <!-- Logo and navigation menu -->
     <a href="/dashboard">
-      <img src="fonts/mclogo.png" alt="MCLogo" class="logo"
-    /></a>
+      <img src="fonts/mclogo.png" alt="MCLogo" class="logo" />
+    </a>
     <ul class="ul">
       <li>
         <a href="/dashboard">Dashboard</a>
@@ -142,8 +141,8 @@
       />
     </form>
 
+    <!-- Heading and time range selection buttons -->
     <h1 class="text-2xl font-bold mb-4">Top Artists</h1>
-
     <div class="mb-4">
       <button
         class="time-range-button mr-2 {% if selected_time_range == 'short_term' %}selected{% endif %}"
@@ -165,6 +164,7 @@
       </button>
     </div>
 
+    <!-- Grid of top artists -->
     <div class="grid">
       {% for artist in artists_info %}
       <a href="{{ artist.artist_link }}" target="_blank" class="grid-item">
@@ -182,16 +182,24 @@
       {% endfor %}
     </div>
 
+    <!-- JavaScript for handling time range button clicks and updating the URL -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Get all time range buttons
         var timeRangeButtons = document.querySelectorAll(".time-range-button");
 
+        // Add click event listener to each time range button
         timeRangeButtons.forEach(function (button) {
           button.addEventListener("click", function () {
+            // Remove 'selected' class from all buttons
             timeRangeButtons.forEach(function (btn) {
               btn.classList.remove("selected");
             });
+
+            // Add 'selected' class to the clicked button
             button.classList.add("selected");
+
+            // Get the selected time range value from the button's data attribute
             var selectedTimeRange = button.getAttribute("data-value");
 
             // Update the URL with the selected time range parameter

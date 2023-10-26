@@ -1,52 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta tags for character set and responsive design -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Dynamic title based on the template variable -->
     <title>{{ title }}</title>
+    <!-- Link to the Tailwind CSS framework hosted on a CDN -->
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
       rel="stylesheet"
     />
+    <!-- Internal styles and font definitions -->
     <style>
+      /* Custom font definition */
       @font-face {
         font-family: "GothamBold";
         src: url("fonts/GothamBold.ttf") format("truetype");
       }
 
+      /* Styles for heading 1 elements using the custom font */
       h1 {
         font-family: "GothamBold", sans-serif;
-        /* Other styles for h1 elements */
+        /* Additional styles for h1 elements */
       }
 
+      /* Body styles, including custom font, background color, and text color */
       body {
         font-family: "GothamBold", sans-serif;
         background-color: #191414;
         color: #ffffff;
       }
 
+      /* Styles for hover effect on elements with class hover-bg-green-500 */
       .hover-bg-green-500:hover {
         background-color: #1db954;
         color: #ffffff;
       }
 
+      /* Styles for hover effect on links inside elements with class track-card */
       .track-card a.album-link:hover {
         text-decoration: underline;
         color: white;
       }
 
+      /* Styles for the track card, including background color transition */
       .track-card {
         background-color: #191414;
         color: white;
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
+      /* Hover styles for track card elements */
       .track-card:hover {
         background-color: #1db954;
         color: white;
         text-decoration: none;
       }
 
+      /* Styles for the logout button */
       .logout-button {
         position: absolute;
         top: 2rem;
@@ -54,6 +66,7 @@
         margin-top: 1rem;
       }
 
+      /* Styles for time range selection buttons */
       .time-range-button {
         cursor: pointer;
         padding: 8px 16px;
@@ -64,11 +77,13 @@
         transition: background-color 0.3s ease;
       }
 
+      /* Selected state styles for time range buttons */
       .time-range-button.selected {
         background-color: #1db954;
         color: white;
       }
 
+      /* Styles for navigation links */
       ul.nav-links {
         display: flex;
         justify-content: center;
@@ -77,25 +92,25 @@
         margin-bottom: 10px;
       }
 
+      /* Styles for individual navigation link items */
       ul.nav-links li {
         margin-right: 20px;
         font-size: 18px; /* You can adjust the font size as needed */
       }
 
-      ul.nav-links li:last-child {
-        margin-right: 0;
-      }
-
+      /* Styles for navigation link hover effect */
       ul.nav-links li a {
         padding: 10px 20px; /* Adjust the padding as needed */
         transition: all 0.3s ease; /* Add transition for smooth hover effect */
       }
 
+      /* Hover styles for navigation links */
       ul.nav-links li a:hover {
         background-color: #1db954;
         color: white;
       }
 
+      /* Styles for the logo */
       .logo {
         position: absolute;
         top: 2rem;
@@ -107,10 +122,13 @@
     </style>
   </head>
 
+  <!-- Body content with dynamic elements -->
   <body class="p-10 flex-col items-start">
+    <!-- Logo linking to the dashboard page -->
     <a href="/dashboard">
-      <img src="fonts/mclogo.png" alt="MCLogo" class="logo"
-    /></a>
+      <img src="fonts/mclogo.png" alt="MCLogo" class="logo" />
+    </a>
+    <!-- Navigation links -->
     <ul class="nav-links">
       <li>
         <a
@@ -151,8 +169,10 @@
       />
     </form>
 
+    <!-- Track display section with time range selection buttons -->
     <div class="ml-8">
       <h2 class="text-2xl font-bold mb-2">Top Tracks</h2>
+      <!-- Time range selection buttons -->
       <div class="flex mb-4">
         <button
           class="time-range-button mr-2 {% if selected_time_range == 'short_term' %}selected{% endif %}"
@@ -174,6 +194,7 @@
         </button>
       </div>
 
+      <!-- Hidden form for submitting time range selection -->
       <form id="filter-form" action="/toptracks" method="get">
         <input
           type="hidden"
@@ -183,19 +204,24 @@
         />
       </form>
 
+      <!-- Displaying track information in a grid layout -->
       <ul class="grid grid-cols-5 gap-4">
+        <!-- Loop through tracks_info and display track details -->
         {% for track in tracks_info %}
-        <li class="border p-4 rounded-lg track-card">
+        <li class="p-4 rounded-lg track-card">
+          <!-- Link to the track's external page -->
           <a
             href="{{ track.track_link }}"
             target="_blank"
             class="block transition duration-300 ease-in-out"
           >
+            <!-- Track image -->
             <img
               src="{{ track.image_url }}"
               alt="Track Image"
               class="max-w-full mb-2"
             />
+            <!-- Track details -->
             <div class="mb-2">
               <strong>Track Name:</strong> {{ track.track_name }}
             </div>
@@ -207,6 +233,7 @@
             </div>
             <div class="mb-2">
               <strong>Album Link:</strong>
+              <!-- Link to the track's album -->
               <a
                 href="{{ track.album_link }}"
                 target="_blank"
@@ -221,18 +248,30 @@
       </ul>
     </div>
 
+    <!-- JavaScript for handling time range selection -->
     <script>
+      // Get all time range buttons
       var timeRangeButtons = document.querySelectorAll(".time-range-button");
 
+      // Add click event listener to each button
       timeRangeButtons.forEach(function (button) {
         button.addEventListener("click", function () {
+          // Remove 'selected' class from all buttons
           timeRangeButtons.forEach(function (btn) {
             btn.classList.remove("selected");
           });
+
+          // Add 'selected' class to the clicked button
           button.classList.add("selected");
+
+          // Get the selected time range value
           var selectedTimeRange = button.getAttribute("data-value");
+
+          // Set the value of the hidden input field
           var hiddenInput = document.getElementById("selected-time-range");
           hiddenInput.value = selectedTimeRange;
+
+          // Submit the form to update the displayed data
           var formElement = document.getElementById("filter-form");
           formElement.submit();
         });

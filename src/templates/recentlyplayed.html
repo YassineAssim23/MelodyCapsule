@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta tags for character set and responsive design -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Page title dynamically generated from a variable called 'title' -->
     <title>{{ title }}</title>
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS link -->
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
       rel="stylesheet"
     />
+    <!-- Custom CSS styles -->
     <style>
+      /* Custom font definition */
       @font-face {
         font-family: "GothamBold";
         src: url("fonts/GothamBold.ttf") format("truetype");
       }
 
+      /* Body styles */
       body {
         font-family: "GothamBold", sans-serif;
         background-color: #191414;
@@ -22,6 +27,7 @@
         padding: 10px;
       }
 
+      /* Navigation links styles */
       ul.nav-links {
         display: flex;
         justify-content: center;
@@ -46,6 +52,7 @@
         padding: 12px 22px;
       }
 
+      /* Logo styles */
       .logo {
         position: absolute;
         top: 2rem;
@@ -55,6 +62,7 @@
         height: auto; /* Automatically adjust the height while maintaining the aspect ratio */
       }
 
+      /* Logout button styles */
       .logout-button {
         position: absolute;
         top: 2rem;
@@ -62,10 +70,12 @@
         margin-top: 1rem;
       }
 
+      /* Body container styles */
       .body-container {
         margin-top: 100px;
       }
 
+      /* Additional margin for navigation links */
       .nav-links {
         margin-top: 35px;
       }
@@ -73,10 +83,12 @@
   </head>
 
   <body>
+    <!-- Logo with a link to the dashboard page -->
     <a href="/dashboard">
       <img src="fonts/mclogo.png" alt="MCLogo" class="logo"
     /></a>
 
+    <!-- Navigation links -->
     <ul class="nav-links mb-10">
       <li>
         <a href="/dashboard" class="px-2 py-1 rounded">Dashboard</a>
@@ -101,11 +113,16 @@
       />
     </form>
 
+    <!-- Main content container -->
     <div class="body-container">
+      <!-- Section title for recently played tracks -->
       <h1 class="text-2xl font-bold mb-4">Recently Played Tracks</h1>
 
+      <!-- Check if recentlyplayed variable is available -->
       {% if recentlyplayed %}
+      <!-- Grid layout for displaying recently played tracks -->
       <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Loop through recentlyplayed variable and display track information -->
         {% for track in recentlyplayed %}
         <a
           href="{{ track.track_link }}"
@@ -113,6 +130,7 @@
           class="rounded-lg hover:bg-green-500 hover:text-white block mb-4 p-4"
         >
           <li>
+            <!-- Display track details: name, artist, album, and play time -->
             {% if track.image_url %}
             <img
               src="{{ track.image_url }}"
@@ -129,6 +147,7 @@
         {% endfor %}
       </ul>
       {% else %}
+      <!-- Message displayed when no recently played tracks are available -->
       <p>No recently played tracks available.</p>
       {% endif %}
     </div>

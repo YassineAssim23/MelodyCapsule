@@ -9,11 +9,13 @@
       rel="stylesheet"
     />
     <style>
+      /* Custom font declaration */
       @font-face {
         font-family: "GothamBold";
         src: url("fonts/GothamBold.ttf") format("truetype");
       }
 
+      /* Styles for the body */
       body {
         font-family: "GothamBold", sans-serif;
         background-color: #191414;
@@ -21,6 +23,7 @@
         padding: 10px;
       }
 
+      /* Styles for the logout button */
       .logout-button {
         position: absolute;
         top: 2rem;
@@ -28,6 +31,7 @@
         margin-top: 1rem;
       }
 
+      /* Styles for the navigation links */
       .ul {
         display: flex;
         justify-content: center; /* Center the links horizontally */
@@ -55,6 +59,7 @@
         padding: 12px 22px;
       }
 
+      /* Styles for the grid items */
       .grid li {
         background-color: #191414;
         color: white;
@@ -67,6 +72,7 @@
         color: white;
       }
 
+      /* Styles for the logo */
       .logo {
         position: absolute;
         top: 2rem;
@@ -79,39 +85,34 @@
   </head>
 
   <body class="p-10">
+    <!-- Logo with a link to the dashboard -->
     <a href="/dashboard">
-      <img src="fonts/mclogo.png" alt="MCLogo" class="logo" /></a>
-    
+      <img src="fonts/mclogo.png" alt="MCLogo" class="logo" />
+    </a>
 
+    <!-- Navigation links -->
     <ul class="ul">
       <li class="mr-4">
-        <a
-          href="/dashboard"
-          class="hover:transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded"
-        >
+        <!-- Dashboard link -->
+        <a href="/dashboard" class="hover:transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
           Dashboard
         </a>
       </li>
       <li class="mr-4">
-        <a
-          href="/toptracks"
-          class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded"
-        >
+        <!-- Top Tracks link -->
+        <a href="/toptracks" class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
           Top Tracks
         </a>
       </li>
       <li class="mr-4">
-        <a
-          href="/topartists"
-          class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded"
-        >
+        <!-- Top Artists link -->
+        <a href="/topartists" class="hover:text-green-800 transition duration-300 ease-in-out hover:bg-green-500 px-2 py-1 rounded">
           Top Artists
         </a>
       </li>
       <li>
-        <a
-          href="/recentlyplayed"
-        >
+        <!-- Recently Played link -->
+        <a href="/recentlyplayed">
           Recently Played
         </a>
       </li>
@@ -126,19 +127,22 @@
       />
     </form>
 
+    <!-- Section heading for user playlists -->
     <h1 class="text-2xl font-bold mb-4">User Playlists</h1>
 
-    <ul
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-    >
+    <!-- Grid layout for displaying user playlists -->
+    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {% for playlist in playlists_info %}
+      <!-- Link to the playlist with its image and name -->
       <a href="{{ playlist.link }}" target="_blank">
         <li class="rounded-lg">
+          <!-- Playlist image -->
           <img
             src="{{ playlist.image_url }}"
             alt="{{ playlist.name }} Playlist Image"
             class="max-w-full max-h-64 mb-2 object-cover rounded-lg"
           />
+          <!-- Playlist name -->
           <span>{{ playlist.name }}</span>
         </li>
       </a>
