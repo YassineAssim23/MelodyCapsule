@@ -1,4 +1,4 @@
 [build]
-publish = "F:\\ProgrammingFolders\\MelodyCapsule\\src"
-command = "python app.py"
-functions = "F:\\ProgrammingFolders\\MelodyCapsule\\src"
+  base = "src"
+  publish = "src"
+  command = "pip install -r requirements.txt && python app.py"
