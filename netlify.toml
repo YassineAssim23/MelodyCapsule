@@ -1,4 +1,4 @@
 [build]
-  base = "src"
-  publish = "src"
-  command = "pip install -r requirements.txt && python app.py"
+  command = "python app.py"
+  publish = "F:/ProgrammingFolders/MelodyCapsule/src"
+  base = "F:/ProgrammingFolders/MelodyCapsule/src"
